@@ -4,4 +4,4 @@
 sudo yum install -y git && \
 sudo amazon-linux-extras install -y ansible2 && \
 cd /home/ec2-user && \
-sudo -u ec2-user git clone https://github.com/ehdrn3020/demo-kafka.git
+sudo -u ec2-user git clone https://github.com/ehdrn3020/kafka_system_with_azar.git
