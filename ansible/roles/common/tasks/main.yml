@@ -7,6 +7,6 @@
   yum:
     name:
       - 'dstat'
-      - '{{ java_version }}-openjdk'
-      - '{{ java_version }}-openjdk-devel'
+      - 'java-{{ java_version }}-openjdk'
+      - 'java-{{ java_version }}-openjdk-devel'
     state: latest
