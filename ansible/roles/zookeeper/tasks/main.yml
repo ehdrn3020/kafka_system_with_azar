@@ -75,8 +75,8 @@
 
 - name: copy zookeeper server in systemd
   copy:
-    src: zookeeper-server.service
-    dest: /etc/systemd/system/zookeeper-server.service
+    src: zookeeper.service
+    dest: /etc/systemd/system/zookeeper.service
     owner: root
     group: root
     mode: '0644'
