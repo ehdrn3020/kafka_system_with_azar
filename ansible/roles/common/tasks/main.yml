@@ -6,7 +6,7 @@
 - name: install Java and tools
   yum:
     name:
-      - 'dstat',
+      - 'dstat'
       - '{{ java_version }}-openjdk'
       - '{{ java_version }}-openjdk-devel'
     state: latest
