@@ -1,0 +1,22 @@
+# 클라이언트와 서버 간의 핑 및 세션 시간 제한 계산에 사용, 단위(밀리초)
+tickTime=2000
+# 팔로워가 리더와 초기화 동기화를 완료하기까지 허용되는 시간, 단위(tickTime * initLimit)
+initLimit=10
+# 팔로워가 리더와 동기화를 유지하지 못했을 때 허용되는 최대 시간, 단위(tickTime * syncLimit)
+syncLimit=5
+
+# Zookeeper 서버가 데이터를 저장할 디렉터리 경로
+dataDir={{ dir_path }}
+
+# Zookeeper 클라이언트가 접속할 포트
+clientPort=2181
+
+# 자동 정리 기능(Autopurge) 사용 시 보관할 최대 스냅샷 개수
+autopurge.snapRetainCount=3
+# Zookeeper 서버가 데이터를 자동으로 정리하는 간격, 단위(시간)
+autopurge.purgeInterval=1
+
+# Zookeeper 클러스터에 참여하는 서버를 정의
+{% for host in groups['zookeeper_hosts'] %}
+server.{{ host | regex_search('(zookeeper_0[1-9]\\.com)') | regex_replace('\\.com', '') | regex_replace('^zookeeper_0', '') }}={{ host }}:2888:3888;2181
+{% endfor %}

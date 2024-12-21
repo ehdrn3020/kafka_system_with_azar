@@ -1,0 +1,7 @@
+---
+- hosts: zookeeper_hosts
+  become: true
+  connection: ssh
+  role:
+    - common
+    - zookeeper
