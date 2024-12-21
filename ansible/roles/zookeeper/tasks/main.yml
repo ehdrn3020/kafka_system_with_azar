@@ -87,5 +87,5 @@
 - name: make sure a service is running
   systemd:
     state: started
-    name: zookeeper-server
+    name: zookeeper
     enabled: yes
