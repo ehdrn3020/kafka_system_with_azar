@@ -63,10 +63,12 @@
   notify:
     - restart zookeeper server
 
-- name: create or update myid file
-  lineinfile:
+- name: create myid
+  shell: echo {{ myid }} > "{{ dir_path }}/myid"
+
+- name: change file ownership, group and permissions
+  file:
     path: "{{ dir_path }}/myid"
-    line: "{{ myid }}"
     owner: zookeeper
     group: zookeeper
     mode: '0644'
