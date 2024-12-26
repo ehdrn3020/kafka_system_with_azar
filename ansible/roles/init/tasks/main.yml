@@ -6,11 +6,22 @@
     state: present
   loop: "{{ hosts_entries }}"
 
+- name: Start SSH agent
+  shell: |
+    eval "$(ssh-agent -s)"
+    echo $SSH_AUTH_SOCK
+  register: ssh_agent_output
+
+- name: Extract SSH_AUTH_SOCK
+  set_fact:
+    ssh_auth_sock: "{{ ssh_agent_output.stdout_lines[-1] }}"
+
 - name: Add keypair.pem to SSH agent
-  command: "ssh-add /home/ec2-user/keypair.pem"
-  become: false
+  shell: ssh-add /path/to/keypair.pem
   environment:
-    SSH_AUTH_SOCK: /tmp/ssh-agent.sock
+    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
+  args:
+    executable: /bin/bash
 
 - name: Verify SSH access to all servers
   shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
