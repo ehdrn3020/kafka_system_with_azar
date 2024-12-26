@@ -23,30 +23,17 @@
     eval "$(ssh-agent -s)"
     echo $SSH_AUTH_SOCK
   register: ssh_agent_output
-  changed_when: false
 
 - name: Extract SSH_AUTH_SOCK
   set_fact:
-    ssh_auth_sock: "{{ ssh_agent_output.stdout | regex_search('SSH_AUTH_SOCK=([^;]+);', '\\1') }}"
+    ssh_auth_sock: "{{ ssh_agent_output.stdout_lines[-1] }}"
 
 - name: Add keypair.pem to SSH agent
   shell: ssh-add /home/ec2-user/keypair.pem
   environment:
-    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
+    ssh_auth_sock: "{{ ssh_auth_sock }}"
   args:
     executable: /bin/bash
-
-- name: Verify added keys
-  shell: ssh-add -l
-  environment:
-    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
-  args:
-    executable: /bin/bash
-  register: verify_keys
-
-- name: Show added keys
-  debug:
-    msg: "{{ verify_keys.stdout }}"
 
 - name: Ensure .ssh directory exists
   file:
