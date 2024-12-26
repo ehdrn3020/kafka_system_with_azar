@@ -1,0 +1,19 @@
+---
+- name: Add entries to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item.ip }} {{ item.fqdn }} {{ item.hostname }}"
+    state: present
+  loop: "{{ hosts_entries }}"
+
+- name: Add keypair.pem to SSH agent
+  command: "ssh-add /home/ec2-user/keypair.pem"
+  become: false
+  environment:
+    SSH_AUTH_SOCK: /tmp/ssh-agent.sock
+
+- name: Verify SSH access to all servers
+  shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
+  loop: "{{ hosts_entries }}"
+  ignore_errors: true
+
