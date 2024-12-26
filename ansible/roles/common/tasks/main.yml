@@ -46,7 +46,7 @@
 - name: Generate SSH key pair
   command: ssh-keygen -t rsa -b 4096 -f /home/ec2-user/.ssh/id_rsa -N "" -q
   args:
-    creates: /home/ec2-user/.ssh/id_rsa.pub
+    creates: /home/ec2-user/.ssh/id_rsa
 
 - name: Read public key content
   slurp:
