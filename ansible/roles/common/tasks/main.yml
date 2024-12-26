@@ -3,10 +3,37 @@
   timezone:
     name: Asia/Seoul
 
-- name: install Java and tools
+- name: Install Java and Tools
   yum:
     name:
       - 'dstat'
       - 'java-{{ java_version }}-openjdk'
       - 'java-{{ java_version }}-openjdk-devel'
     state: latest
+
+- name: Add entries to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item.ip }} {{ item.fqdn }} {{ item.hostname }}"
+    state: present
+  loop: "{{ hosts_entries }}"
+
+- name: Copy keypair.pem to target servers
+  copy:
+    src: "{{ keypair_path }}"
+    dest: "/home/ec2-user/keypair.pem"
+    owner: ec2-user
+    group: ec2-user
+    mode: '0600'
+
+- name: Add keypair.pem to SSH agent
+  command: "ssh-add /home/ec2-user/keypair.pem"
+  become: false
+  environment:
+    SSH_AUTH_SOCK: /tmp/ssh-agent.sock
+
+- name: Verify SSH access to all servers
+  shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
+  loop: "{{ hosts_entries }}"
+  ignore_errors: true
+
