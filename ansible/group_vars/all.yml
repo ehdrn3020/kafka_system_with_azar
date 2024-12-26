@@ -4,9 +4,9 @@ hosts_entries:
   - { ip: "172.31.46.150", fqdn: "zookeeper_01.com", hostname: "zookeeper01" }
   - { ip: "172.31.43.12", fqdn: "zookeeper_02.com", hostname: "zookeeper02" }
   - { ip: "172.31.41.199", fqdn: "zookeeper_03.com", hostname: "zookeeper03" }
-  - { ip: "172.31.46.150", fqdn: "kafka_01.com", hostname: "kafka01" }
-  - { ip: "172.31.43.12", fqdn: "kafka_02.com", hostname: "kafka02" }
-  - { ip: "172.31.41.199", fqdn: "kafka_03.com", hostname: "kafka03" }
+#  - { ip: "172.31.46.150", fqdn: "kafka_01.com", hostname: "kafka01" }
+#  - { ip: "172.31.43.12", fqdn: "kafka_02.com", hostname: "kafka02" }
+#  - { ip: "172.31.41.199", fqdn: "kafka_03.com", hostname: "kafka03" }
 
 keypair_path: "setting_aws/keypair.pem"  # 로컬 keypair.pem 파일 경로
 ansible_deploy_server: "13.125.207.190" # Ansible 배포 서버 IP
