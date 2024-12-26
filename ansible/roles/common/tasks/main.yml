@@ -31,7 +31,7 @@
 - name: Add keypair.pem to SSH agent
   shell: ssh-add /home/ec2-user/keypair.pem
   environment:
-    ssh_auth_sock: "{{ ssh_auth_sock }}"
+    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
   args:
     executable: /bin/bash
 
