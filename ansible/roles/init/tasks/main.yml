@@ -23,6 +23,11 @@
   args:
     executable: /bin/bash
 
+- name: Generate SSH key pair
+  command: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N "" -q
+  args:
+    creates: ~/.ssh/id_rsa
+
 - name: Verify SSH access to all servers
   shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
   loop: "{{ hosts_entries }}"
