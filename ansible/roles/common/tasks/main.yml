@@ -38,7 +38,7 @@
 - name: Generate SSH key pair
   command: ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa -N "" -q
   args:
-    creates: ~/.ssh/id_rsa
+    creates: ~/.ssh/id_rsa.pub
 
 - name: Read public key content
   slurp:
