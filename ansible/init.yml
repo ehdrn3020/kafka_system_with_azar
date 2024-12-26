@@ -3,4 +3,4 @@
   become: true
   connection: local
   roles:
-    - init
+    - common
