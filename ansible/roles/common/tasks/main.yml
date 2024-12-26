@@ -47,7 +47,7 @@
 
 - name: Add additional key (optional)
   copy:
-    src: /path/to/keypair.pem
+    src: /home/ec2-user/keypair.pem
     dest: /home/ec2-user/.ssh/keypair.pem
     owner: ec2-user
     group: ec2-user
