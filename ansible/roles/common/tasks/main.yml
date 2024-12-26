@@ -34,6 +34,7 @@
     SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
   args:
     executable: /bin/bash
+  mode: '0600'
 
 - name: Ensure .ssh directory exists
   file:
