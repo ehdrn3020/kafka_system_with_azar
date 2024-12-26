@@ -7,3 +7,6 @@ zookeeper_03.com
 kafka_01.com
 kafka_02.com
 kafka_03.com
+
+[local]
+localhost
