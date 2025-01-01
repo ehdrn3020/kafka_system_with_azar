@@ -1,6 +1,6 @@
 ---
 - hosts: all
   become: true
-  connection: ssh
+  connection: local
   roles:
     - sshinit
