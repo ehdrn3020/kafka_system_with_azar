@@ -1,4 +1,8 @@
 ---
+- name: Set timezone to Asia/Seoul
+  timezone:
+    name: Asia/Seoul
+
 - name: Install Java and Tools
   yum:
     name:
@@ -6,10 +10,6 @@
       - 'java-{{ java_version }}-openjdk'
       - 'java-{{ java_version }}-openjdk-devel'
     state: latest
-
-- name: Set timezone to Asia/Seoul
-  timezone:
-    name: Asia/Seoul
 
 - name: Add entries to /etc/hosts
   lineinfile:
