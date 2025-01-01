@@ -5,4 +5,4 @@
     ansible_user: ec2-user
   connection: local
   roles:
-    - common
+    - sshinit
