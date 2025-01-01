@@ -6,45 +6,6 @@
     state: present
   loop: "{{ hosts_entries }}"
 
-- name: Ensure .ssh directory exists
-  file:
-    path: /home/ec2-user/.ssh
-    state: directory
-    owner: ec2-user
-    group: ec2-user
-    mode: '0700'
-
-# Start SSH agent
-- name: Start SSH agent
-  shell: |
-    eval "$(ssh-agent -s)"
-    echo $SSH_AUTH_SOCK
-  register: ssh_agent_output
-
-# Extract SSH_AUTH_SOCK
-- name: Extract SSH_AUTH_SOCK
-  set_fact:
-    ssh_auth_sock: "{{ ssh_agent_output.stdout | regex_search('SSH_AUTH_SOCK=([^;]+);', '\\1') }}"
-
-# Add private key to SSH agent
-- name: Add private key to SSH agent
-  shell: ssh-add /home/ec2-user/keypair.pem
-  environment:
-    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
-  args:
-    executable: /bin/bash
-
-# Generate SSH key pair
-- name: Generate SSH key pair
-  shell: ssh-keygen -t rsa -b 4096 -f /home/ec2-user/.ssh/id_rsa -N "" -q
-  args:
-    creates: /home/ec2-user/.ssh/id_rsa.pub
-
-- name: Add public key to authorized_keys
-  shell: cat /home/ec2-user/.ssh/id_rsa.pub >> /home/ec2-user/.ssh/authorized_keys
-  args:
-    creates: /home/ec2-user/.ssh/authorized_keys
-
 - name: Verify SSH access to all servers
   shell: "sudo ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
   loop: "{{ hosts_entries }}"
