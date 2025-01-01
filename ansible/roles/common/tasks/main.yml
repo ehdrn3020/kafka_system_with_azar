@@ -1,7 +1,7 @@
 ---
 - name: Set timezone to Asia/Seoul
   timezone:
-    name: Asia/Tokyo
+    name: Asia/Seoul
 
 - name: Install Java and Tools
   yum:
@@ -10,15 +10,3 @@
       - 'java-{{ java_version }}-openjdk'
       - 'java-{{ java_version }}-openjdk-devel'
     state: latest
-
-- name: Add entries to /etc/hosts
-  lineinfile:
-    path: /etc/hosts
-    line: "{{ item.ip }} {{ item.fqdn }} {{ item.hostname }}"
-    state: present
-  loop: "{{ hosts_entries }}"
-
-- name: Verify SSH access to all servers
-  shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
-  loop: "{{ hosts_entries }}"
-  ignore_errors: true

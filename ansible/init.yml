@@ -4,4 +4,4 @@
     ansible_user: ec2-user
   connection: local
   roles:
-    - common
+    - ssh_init
