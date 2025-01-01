@@ -40,7 +40,7 @@
 
 # Add private key to SSH agent
 - name: Add private key to SSH agent
-  shell: ssh-add keypair.pem
+  shell: ssh-add /home/ec2-user/keypair.pem
   environment:
     SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
   args:
