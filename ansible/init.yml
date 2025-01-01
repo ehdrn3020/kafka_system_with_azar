@@ -1,6 +1,5 @@
 ---
 - hosts: local
-  become: true
   vars:
     ansible_user: ec2-user
   connection: local
