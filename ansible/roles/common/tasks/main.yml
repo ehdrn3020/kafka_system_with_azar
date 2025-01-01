@@ -21,6 +21,4 @@
 - name: Verify SSH access to all servers
   shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
   loop: "{{ hosts_entries }}"
-  environment:
-    ANSIBLE_SSH_PRIVATE_KEY_FILE: /home/ec2-user/keypair.pem
   ignore_errors: true
