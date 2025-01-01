@@ -26,40 +26,36 @@
     group: ec2-user
     mode: '0700'
 
-- name: Generate SSH key pair if not exists
-  command: ssh-keygen -t rsa -f /home/ec2-user/.ssh/id_rsa -q -N ""
-  args:
-    creates: /home/ec2-user/.ssh/id_rsa
-  become_user: ec2-user
-
-- name: Read the public key content
-  shell: cat /home/ec2-user/.ssh/id_rsa.pub
-  register: ssh_pub_key
-  become_user: ec2-user
-
-- name: Create authorized_keys file with the public key
-  copy:
-    content: "{{ ssh_pub_key.stdout }}\n"
-    dest: /home/ec2-user/.ssh/authorized_keys
-    owner: ec2-user
-    group: ec2-user
-    mode: '0600'
-
-- name: Add additional key (optional)
-  copy:
-    src: /home/ec2-user/keypair.pem
-    dest: /home/ec2-user/.ssh/keypair.pem
-    owner: ec2-user
-    group: ec2-user
-    mode: '0600'
-
-- name: Start ssh-agent and add the keypair (optional)
+# Start SSH agent
+- name: Start SSH agent
   shell: |
     eval "$(ssh-agent -s)"
-    ssh-add /home/ec2-user/.ssh/keypair.pem
-  become_user: ec2-user
+    echo $SSH_AUTH_SOCK
+  register: ssh_agent_output
+
+# Extract SSH_AUTH_SOCK
+- name: Extract SSH_AUTH_SOCK
+  set_fact:
+    ssh_auth_sock: "{{ ssh_agent_output.stdout | regex_search('SSH_AUTH_SOCK=([^;]+);', '\\1') }}"
+
+# Add private key to SSH agent
+- name: Add private key to SSH agent
+  shell: ssh-add keypair.pem
+  environment:
+    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
   args:
     executable: /bin/bash
+
+# Generate SSH key pair
+- name: Generate SSH key pair
+  shell: ssh-keygen -t rsa -b 4096 -f /home/ec2-user/.ssh/id_rsa -N "" -q
+  args:
+    creates: /home/ec2-user/.ssh/id_rsa.pub
+
+- name: Add public key to authorized_keys
+  shell: cat /home/ec2-user/.ssh/id_rsa.pub >> /home/ec2-user/.ssh/authorized_keys
+  args:
+    creates: /home/ec2-user/.ssh/authorized_keys
 
 - name: Verify SSH access to all servers
   shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
