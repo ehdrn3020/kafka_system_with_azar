@@ -17,6 +17,10 @@
 # Start SSH agent
 - name: Start SSH agent
   shell : ssh-agent bash
+
+# SSH ADD KEY
+- name: Start SSH agent
+  shell : ssh-add keypair.pem
 #  shell: |
 #    eval "$(ssh-agent -s)"
 #    echo $SSH_AUTH_SOCK
@@ -37,7 +41,7 @@
 
 # Generate SSH key pair
 - name: Generate SSH key pair
-  shell: ssh-keygen -t rsa -b 4096 -f /home/ec2-user/.ssh/id_rsa -N "" -q
+  shell: ssh-keygen -q
   args:
     creates: /home/ec2-user/.ssh/id_rsa.pub
 
