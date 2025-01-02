@@ -1,7 +1,6 @@
 ---
 - hosts: local
-  vars:
-    ansible_user: ec2-user
+  become: true
   connection: local
   roles:
     - sshinit
