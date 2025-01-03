@@ -4,11 +4,11 @@
 set -e
 
 # Define variables
-PRIVATE_KEY="keypair.pem"
+PRIVATE_KEY="/home/ec2-user/keypair.pem"
 SSH_DIR="/home/ec2-user/.ssh"
 ID_RSA="$SSH_DIR/id_rsa"
 AUTHORIZED_KEYS="$SSH_DIR/authorized_keys"
-GIT_REPO_PATH="/path/to/your/repo"  # Git repository path
+GIT_REPO_PATH="/home/ec2-user/kafka_system_with_azar/ansible"  # Git repository path
 ANSIBLE_PLAYBOOK="init.yml"
 
 # Start SSH agent
