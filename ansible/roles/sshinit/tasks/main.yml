@@ -16,28 +16,23 @@
 
 # Start SSH agent
 - name: Start SSH agent
-  shell : ssh-agent bash
+  shell: |
+    eval "$(ssh-agent -s)"
+    echo $SSH_AUTH_SOCK
+  register: ssh_agent_output
 
-# SSH ADD KEY
-- name: Start SSH agent
-  shell : ssh-add /home/ec2-user/keypair.pem
-#  shell: |
-#    eval "$(ssh-agent -s)"
-#    echo $SSH_AUTH_SOCK
-#  register: ssh_agent_output
+# Extract SSH_AUTH_SOCK
+- name: Extract SSH_AUTH_SOCK
+  set_fact:
+    ssh_auth_sock: "{{ ssh_agent_output.stdout | regex_search('SSH_AUTH_SOCK=([^;]+);', '\\1') }}"
 
-## Extract SSH_AUTH_SOCK
-#- name: Extract SSH_AUTH_SOCK
-#  set_fact:
-#    ssh_auth_sock: "{{ ssh_agent_output.stdout | regex_search('SSH_AUTH_SOCK=([^;]+);', '\\1') }}"
-#
-## Add private key to SSH agent
-#- name: Add private key to SSH agent
-#  shell: ssh-add /home/ec2-user/keypair.pem
-#  environment:
-#    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
-#  args:
-#    executable: /bin/bash
+# Add private key to SSH agent
+- name: Add private key to SSH agent
+  shell: ssh-add /home/ec2-user/keypair.pem
+  environment:
+    SSH_AUTH_SOCK: "{{ ssh_auth_sock }}"
+  args:
+    executable: /bin/bash
 
 # Generate SSH key pair
 - name: Generate SSH key pair
