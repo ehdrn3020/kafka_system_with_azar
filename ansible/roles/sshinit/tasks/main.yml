@@ -20,7 +20,7 @@
 
 # SSH ADD KEY
 - name: Start SSH agent
-  shell : ssh-add keypair.pem
+  shell : ssh-add /home/ec2-user/keypair.pem
 #  shell: |
 #    eval "$(ssh-agent -s)"
 #    echo $SSH_AUTH_SOCK
