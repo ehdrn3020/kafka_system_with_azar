@@ -1,7 +1,6 @@
 ---
 - hosts: local
   become: true
-#  become_user: ec2-user
   connection: local
   roles:
     - sshinit
