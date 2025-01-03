@@ -5,3 +5,8 @@
     line: "{{ item.ip }} {{ item.fqdn }} {{ item.hostname }}"
     state: present
   loop: "{{ hosts_entries }}"
+
+- name: Verify SSH access to all servers
+  shell: "ssh -o StrictHostKeyChecking=no ec2-user@{{ item.fqdn }} exit"
+  loop: "{{ hosts_entries }}"
+  ignore_errors: true
