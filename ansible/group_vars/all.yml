@@ -3,7 +3,7 @@ java_version: "1.8.0"
 hosts_entries:
   - { ip: "172.31.34.173", fqdn: "zookeeper_01.com", hostname: "zookeeper01" }
   - { ip: "172.31.46.45", fqdn: "zookeeper_02.com", hostname: "zookeeper02" }
-#  - { ip: "172.31.44.78", fqdn: "zookeeper_03.com", hostname: "zookeeper03" }
+  - { ip: "172.31.44.78", fqdn: "zookeeper_03.com", hostname: "zookeeper03" }
   - { ip: "172.31.34.173", fqdn: "kafka_01.com", hostname: "kafka01" }
   - { ip: "172.31.46.45", fqdn: "kafka_02.com", hostname: "kafka02" }
-#  - { ip: "172.31.44.78", fqdn: "kafka_03.com", hostname: "kafka03" }
+  - { ip: "172.31.44.78", fqdn: "kafka_03.com", hostname: "kafka03" }
