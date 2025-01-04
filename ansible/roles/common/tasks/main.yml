@@ -12,7 +12,9 @@
     state: latest
 
 - name: Change to project directory and pull latest changes
-  shell: git pull
+  shell: |
+    cd /home/ec2-user/kafka_system_with_azar/
+    git pull
 
 - name: Add entries to /etc/hosts
   lineinfile:
