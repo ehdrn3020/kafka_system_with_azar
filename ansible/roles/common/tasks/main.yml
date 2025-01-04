@@ -11,6 +11,9 @@
       - 'java-{{ java_version }}-openjdk-devel'
     state: latest
 
+- name: Change to project directory and pull latest changes
+  shell: git pull
+
 - name: Add entries to /etc/hosts
   lineinfile:
     path: /etc/hosts
