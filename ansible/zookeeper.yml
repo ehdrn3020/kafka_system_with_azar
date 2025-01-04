@@ -4,4 +4,4 @@
   connection: ssh
   roles:
     - common
-    - zookeeper
+#    - zookeeper
