@@ -10,3 +10,11 @@
       - 'java-{{ java_version }}-openjdk'
       - 'java-{{ java_version }}-openjdk-devel'
     state: latest
+
+- name: Add entries to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ hostvars[item].ansible_host }} {{ item }} {{ hostvars[item].hostname }}"
+    state: present
+  loop: "{{ groups[inventory_hostname_short.split('.')[0] ~ '_hosts'] }}"
+  when: hostvars[item].ansible_host is defined and hostvars[item].hostname is defined

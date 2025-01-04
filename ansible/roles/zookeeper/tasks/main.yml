@@ -1,12 +1,4 @@
 ---
-- name: Add entries to /etc/hosts
-  lineinfile:
-    path: /etc/hosts
-    line: "{{ hostvars[item].ansible_host }} {{ item }} {{ hostvars[item].hostname }}"
-    state: present
-  loop: "{{ groups['zookeeper_hosts'] }}"
-  when: hostvars[item].ansible_host is defined and hostvars[item].hostname is defined
-
 - name: check if zookeeper is already installed
   stat:
     path: /usr/local/zookeeper
