@@ -12,47 +12,44 @@
 
 ### EC2 서버 실행
 ```commandline
-sh setting_aws/setup_server.sh ${EC2_NAME}
+sh setting_aws/setup_server.sh server_1
+sh setting_aws/setup_server.sh server_2
+sh setting_aws/setup_server.sh server_3
 ```
 
 ### scp keypair.pem
 ```commandline
-scp -i setting_aws/keypair.pem setting_aws/keypair.pem ec2-user@111.222.333.444:~
+scp -i setting_aws/keypair.pem setting_aws/keypair.pem ec2-user@server_1_ip:~
 ```
 
 ### SSH 접속
 ```commandline
-ssh -i setting_aws/keypair.pem ec2-user@111.222.333.444
+ssh -i setting_aws/keypair.pem ec2-user@server_1_ip
 ```
 
-### ansible key-gen
+### ansible key-gen ( optional)
 ```commandline
 ssh-agent bash
-ssh-add keypair.pem
-ssh-keygen
-cat /home/ec2-user/.ssh/id_rsa.pub > /home/ec2-user/.ssh/authorized_keys
-ssh zookeeper_02.com
+ssh-add keypair.pem 
+ssh-keygen -t rsa -b 4096 -f /home/ec2-user/.ssh/id_rsa -N "" -q
+cat /home/ec2-user/.ssh/id_rsa.pub >> /home/ec2-user/.ssh/authorized_keys
 ```
 
 ### group_var host 관련 수정
 ```commandline
-group_vars/all.yml 파일 호스트 수정
+inventory/hosts 파일의 ansible_host 변수 수정
 git push
-배포할 서버에서 git pull
+server_1_ip에서 git pull
 ```
 
+### zookeeper 설치
 ```commandline
 cd /home/ec2-user/kafka_system_with_azar/ansible/
-ansible-playbook -i inventory/hosts init.yml
 ansible-playbook -i inventory/hosts zookeeper.yml
 ```
 
-변수가 제대로 바인딩되는지 확인
-ansible-playbook -i inventory zookeeper.yml --check --diff
+zookeeper 실행 확인
+```commandline
+systemctl status zookeeper
+```
 
-zookeeper
-zoo.cfg
-myid
-
-host를 각 서버마다 적용하는 법
-ssh로 ansible 하는 법

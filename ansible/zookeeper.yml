@@ -6,4 +6,4 @@
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   roles:
     - common
-#    - zookeeper
+    - zookeeper
