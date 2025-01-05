@@ -42,14 +42,16 @@ git push
 server_1_ip에서 git pull
 ```
 
+## Zookeeper Setting
 ### zookeeper 설치
 ```commandline
 cd /home/ec2-user/kafka_system_with_azar/ansible/
 ansible-playbook -i inventory/hosts zookeeper.yml
 ```
 
-zookeeper 실행 확인
+### zookeeper 실행 확인
 ```commandline
 systemctl status zookeeper
+cat /data/zookeeper/myid
 ```
 
