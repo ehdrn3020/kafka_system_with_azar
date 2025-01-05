@@ -1,6 +1,7 @@
 [zookeeper_hosts]
 zookeeper_01.com hostname=zookeeper01 ansible_host=172.31.37.76
 zookeeper_02.com hostname=zookeeper02 ansible_host=172.31.42.217
+zookeeper_02.com hostname=zookeeper02 ansible_host=172.31.34.27
 
 [kafka_hosts]
 kafka_01.com hostname=kafka01 ansible_host=172.31.32.107
