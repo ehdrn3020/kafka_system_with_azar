@@ -1,11 +1,10 @@
 [zookeeper_hosts]
-zookeeper_01.com hostname=zookeeper01 ansible_host=172.31.32.107
-zookeeper_02.com hostname=zookeeper02 ansible_host=172.31.47.243
-zookeeper_03.com hostname=zookeeper03 ansible_host=172.31.34.82
+zookeeper_01.com hostname=zookeeper01 ansible_host=172.31.37.76
+zookeeper_02.com hostname=zookeeper02 ansible_host=172.31.42.217
 
 [kafka_hosts]
-kafka_01.com ansible_host=172.31.32.107 hostname=kafka01
-kafka_02.com ansible_host=172.31.32.107 hostname=kafka02
+kafka_01.com hostname=kafka01 ansible_host=172.31.32.107
+kafka_02.com hostname=kafka02 ansible_host=172.31.32.107
 
 [local]
 localhost
