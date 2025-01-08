@@ -1,0 +1,6 @@
+---
+- name: restart kafka server
+  systemd:
+    name: kafka.service
+    state: restarted
+    daemon_reload: yes
