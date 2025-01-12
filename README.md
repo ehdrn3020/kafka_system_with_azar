@@ -55,3 +55,21 @@ systemctl status zookeeper
 cat /data/zookeeper/myid
 ```
 
+## Kafka Setting
+### kafka 설치
+```commandline
+ansible-playbook -i inventory/hosts kafka.yml
+```
+### kafka 실행 확인
+```commandline
+# server_1에서 토픽생성 ( 자동토픽생성(Auto Topic Creation)으로 토픽 생성 생략가능 )
+/usr/local/kafka/bin/kafka-topics.sh --bootstrap-server kafka_01.com:9092 --create --topic test-overview01 --partitions 1 --replication-factor 3
+
+# server_2에서 consumer 실행 
+/usr/local/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka_01.com:9092 --topic test-overview01
+
+# server_1 producer로 메세지 전송
+/usr/local/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka_02.com:9092 --topic test-overview01
+
+# server_2에서 전송 된 메세지 확인
+```
