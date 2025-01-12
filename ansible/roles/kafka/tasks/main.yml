@@ -73,7 +73,7 @@
     mode: '0644'
     backup: no
   with_items:
-    - kafka-server.service
+    - kafka.service
 #    - kafka-connect.service
   notify:
     - restart kafka server
