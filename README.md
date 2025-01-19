@@ -68,8 +68,6 @@ ansible-playbook -i inventory/hosts kafka.yml
 # server_2에서 consumer 실행 
 /usr/local/kafka/bin/kafka-console-consumer.sh --bootstrap-server kafka_01.com:9092 --topic test-overview01
 
-
-
 # server_1 producer로 메세지 전송
 /usr/local/kafka/bin/kafka-console-producer.sh --bootstrap-server kafka_02.com:9092 --topic test-overview01
 
