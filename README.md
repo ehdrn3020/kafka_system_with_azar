@@ -39,7 +39,8 @@ cat /home/ec2-user/.ssh/id_rsa.pub >> /home/ec2-user/.ssh/authorized_keys
 ```commandline
 inventory/hosts 파일의 ansible_host 변수 수정
 git push
-server_1_ip에서 git pull
+cd /home/ec2-user/kafka_system_with_azar/
+git pull  ( server_1 에서 실행 )
 ```
 
 ## Zookeeper Setting
@@ -73,3 +74,11 @@ ansible-playbook -i inventory/hosts kafka.yml
 
 # server_2에서 전송 된 메세지 확인
 ```
+
+## Schema Registery
+- schema_registry/README.md 참고하여 Schema Registery 적용
+- server_1 에서 실행
+
+## 고도화
+- Schema Registery 이중화 구성
+
