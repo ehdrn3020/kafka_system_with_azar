@@ -28,7 +28,7 @@ def delivery_report(err, msg):
 avroProducer = AvroProducer({
     'bootstrap.servers': 'kafka_01.com,kafka_02.com,kafka_03.com',
     'on_delivery': delivery_report,
-    'schema.registry.url': 'http://kafka_03.com:8081'
+    'schema.registry.url': 'http://kafka_01.com:8081' # Schema Registry를 설치만 서버
     }, default_value_schema=value_schema)
 
 avroProducer.produce(topic='kafka-avro2', value=value)
