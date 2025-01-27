@@ -19,6 +19,7 @@ sudo vi /etc/systemd/system/schema-registry.service
 프로젝트의 schema_registry/schema-registry.properties 참조하여 업데이트
 sudo systemctl daemon-reload
 sudo systemctl start schema-registry
+sudo systemctl status schema-registry
 ```
 
 ### 확인
