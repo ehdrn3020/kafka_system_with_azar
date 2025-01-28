@@ -1,14 +1,4 @@
 ---
-#- name: stop kafka-server
-#  systemd:
-#    state: stopped
-#    name: kafka-server
-#  ignore_errors: yes
-
-#- name: remove directory kafka
-#  file:
-#    path: "{{ dir_path }}"
-#    state: absent
 - name: check if kafka is already installed
   stat:
     path: /usr/local/kafka
