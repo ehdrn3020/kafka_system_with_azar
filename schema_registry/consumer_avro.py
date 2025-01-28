@@ -21,7 +21,7 @@ c = AvroConsumer({
     'bootstrap.servers': 'kafka_01.com,kafka_02.com,kafka_03.com',
     'group.id': 'python-groupid01',
     'auto.offset.reset': 'earliest',
-    'schema.registry.url': 'http://kafka_02.com:8081'},reader_value_schema=value_schema)
+    'schema.registry.url': 'http://kafka_01.com:8081'},reader_value_schema=value_schema)
 
 c.subscribe(['kafka-avro2'])
 
