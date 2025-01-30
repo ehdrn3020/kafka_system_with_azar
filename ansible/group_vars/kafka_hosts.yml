@@ -1,5 +1,4 @@
 kafkaversion: 2.6.0
 brokerid: "{{ inventory_hostname | regex_search('(kafka_0[0-9]\\.com)') | regex_replace('\\.com', '') | regex_replace('^kafka_0', '') }}"
-zookeeperinfo: "{{ groups['zookeeper_hosts'] | join(',') }}"
-
+zookeeperinfo: "{{ groups['zookeeper_hosts'] | map('regex_replace', '^([^:]+)$', '\\1:2181') | join(',') }}"
 dir_path: /data/kafka-logs
