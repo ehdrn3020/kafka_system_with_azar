@@ -53,7 +53,7 @@ python consumer_avro.py
 >>> {'name': 'Peter', 'class': 1}
 ```
 
-### 스키마 전용 확인
+### 스키마 적용 확인
 ```commandline
 curl http://kafka_01.com:8081/schemas | python -m json.tool
 >>>
