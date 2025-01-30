@@ -9,7 +9,8 @@ value_schema_str = """
  "doc": "This is an example of Avro.",
  "name": "Student",
  "fields": [
-     {"name": "name", "type": ["null", "string"], "default": null, "doc": "Name of the student"},
+     {"name": "first_name", "type": ["null", "string"], "default": null, "doc": "First name of the student"},
+     {"name": "last_name", "type": ["null", "string"], "default": null, "doc": "Last name of the student"},
      {"name": "class", "type": "int", "default": 1, "doc": "Class of the student"}
  ]
 }
