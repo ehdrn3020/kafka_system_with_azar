@@ -16,7 +16,7 @@ value_schema_str = """
 """
 
 value_schema = avro.loads(value_schema_str)
-value = {"name": "Peter", "class": 1} # 전송할 메시지
+value = {"first_name": "Peter", "last_name": "Parker", "class": 1} # 전송할 메시지
 
 def delivery_report(err, msg):
     """ Called once for each message produced to indicate delivery result.
