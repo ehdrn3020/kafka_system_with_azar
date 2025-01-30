@@ -2,14 +2,14 @@
 - name: Download Confluent Platform tarball
   ansible.builtin.command:
     cmd: "wget http://packages.confluent.io/archive/6.1/confluent-community-6.1.0.tar.gz -O /opt/confluent-community-6.1.0.tar.gz"
-  args:
-    creates: /opt/confluent-community-6.1.0.tar.gz  # 이미 파일이 존재하면 다운로드 생략
+  register: download_result # 이미 파일이 존재하면 다운로드 생략
 
 - name: Extract Confluent tarball
   ansible.builtin.unarchive:
     src: /opt/confluent-community-6.1.0.tar.gz
     dest: /usr/local/
-    remote_src: yes  # 원격 서버에 이미 있는 tar 파일 사용
+    remote_src: yes
+  when: download_result.changed
 
 - name: Create symbolic link for Confluent
   ansible.builtin.file:
@@ -17,3 +17,28 @@
     dest: /usr/local/confluent
     state: link
     force: yes  # 기존 링크가 있을 경우 대체
+  when: download_result.changed
+
+- name: copy properties conf files
+  template:
+    src: schema-registry.properties
+    dest: /usr/local/confluent/etc/schema-registry/schema-registry.properties
+    mode: '0644'
+    backup: no
+
+- name: copy service conf files
+  template:
+    src: schema-registry.service
+    dest: /etc/systemd/system/schema-registry.service
+    mode: '0644'
+    backup: no
+
+- name: Reload systemd manager configuration
+  ansible.builtin.command: systemctl daemon-reload
+  register: reload_result
+
+- name: Start Schema Registry service
+  ansible.builtin.service:
+    name: schema-registry
+    state: started
+  when: reload_result is succeeded
