@@ -77,7 +77,6 @@ ansible-playbook -i inventory/hosts kafka.yml
 
 
 ## Schema Registery
-- server_1 에서 실행
 - schema_registry/README.md 내용을 ansible 자동화
 
 ### 스키마 레지스트리 설치 및 실행
