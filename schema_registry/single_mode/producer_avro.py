@@ -18,12 +18,6 @@ value_schema_str = """
 value_schema = avro.loads(value_schema_str)
 value = {"first_name": "Peter", "last_name": "Parker", "class": 1} # 전송할 메시지
 
-schema_registry_urls = [
-    'http://kafka_01.com:8081',
-    'http://kafka_02.com:8081',
-    'http://kafka_03.com:8081'
-]
-
 def delivery_report(err, msg):
     """ Called once for each message produced to indicate delivery result.
         Triggered by poll() or flush(). """
@@ -32,16 +26,11 @@ def delivery_report(err, msg):
     else:
         print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
 
-for url in schema_registry_urls:
-    try:
-        avroProducer = AvroProducer({
-            'bootstrap.servers': 'kafka_01.com,kafka_02.com,kafka_03.com',
-            'on_delivery': delivery_report,
-            'schema.registry.url': 'http://kafka_01.com:8081'
-            }, default_value_schema=value_schema)
+avroProducer = AvroProducer({
+    'bootstrap.servers': 'kafka_01.com,kafka_02.com,kafka_03.com',
+    'on_delivery': delivery_report,
+    'schema.registry.url': 'http://kafka_01.com:8081'
+    }, default_value_schema=value_schema)
 
-        avroProducer.produce(topic='kafka-avro2', value=value)
-        avroProducer.flush()
-        break
-    except Exception as e:
-        print(f"Failed to connect to {url}, Error: {e}")
+avroProducer.produce(topic='kafka-avro2', value=value)
+avroProducer.flush()
