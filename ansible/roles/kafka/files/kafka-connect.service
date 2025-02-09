@@ -7,8 +7,9 @@ Type=simple
 SyslogIdentifier=kafka-connect
 WorkingDirectory=/usr/local/kafka
 Restart=always
+# Kafka Connect 실행 명령
 ExecStart=/usr/local/kafka/bin/connect-distributed.sh /usr/local/kafka/config/connect-distributed.properties
-ExecStop=/usr/local/kafka/bin/connect-distributed.sh
+ExecStop=/bin/kill -TERM $MAINPID
 
 [Install]
 WantedBy=multi-user.target
