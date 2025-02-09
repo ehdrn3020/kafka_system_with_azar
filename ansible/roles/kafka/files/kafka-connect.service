@@ -10,6 +10,7 @@ Restart=always
 # Kafka Connect 실행 명령
 ExecStart=/usr/local/kafka/bin/connect-distributed.sh /usr/local/kafka/config/connect-distributed.properties
 ExecStop=/bin/kill -TERM $MAINPID
+Environment="CONNECT_PLUGIN_PATH=/usr/local/kafka/config"
 
 [Install]
 WantedBy=multi-user.target
