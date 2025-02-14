@@ -2,6 +2,7 @@
 - name: Ensure OpenSearch user exists
   user:
     name: opensearch
+    group: opensearch
     system: yes
     shell: /bin/bash
     create_home: no
@@ -15,22 +16,24 @@
   file:
     path: "{{ opensearch_path }}"
     state: directory
+    owner: opensearch
+    group: opensearch
     mode: '0755'
-  when: not opensearch_installed.stat.exists
+#  when: not opensearch_installed.stat.exists
 
 - name: Download OpenSearch from web
   get_url:
     url: "https://artifacts.opensearch.org/releases/bundle/opensearch/{{ opensearch_version }}/opensearch-{{ opensearch_version }}-linux-x64.tar.gz"
     dest: /opt/opensearch.tar.gz
     mode: '0600'
-  when: not opensearch_installed.stat.exists
+#  when: not opensearch_installed.stat.exists
 
 - name: Unarchive OpenSearch
   unarchive:
     src: /opt/opensearch.tar.gz
     dest: /usr/local/
     remote_src: yes
-  when: not opensearch_installed.stat.exists
+#  when: not opensearch_installed.stat.exists
 
 - name: Setup OpenSearch symbolic link
   file:
@@ -38,7 +41,7 @@
     dest: "{{ opensearch_path }}"
     state: link
     force: yes
-  when: not opensearch_installed.stat.exists
+#  when: not opensearch_installed.stat.exists
 
 - name: Mkdir OpenSearch log directory exists
   file:
@@ -47,6 +50,7 @@
     owner: opensearch
     group: opensearch
     mode: '0755'
+#  when: not opensearch_installed.stat.exists
 
 - name: Create GC log file
   file:
@@ -54,13 +58,15 @@
     state: touch
     owner: opensearch
     group: opensearch
-    mode: '0644'
-  when: not opensearch_installed.stat.exists
+    mode: '0755'
+#  when: not opensearch_installed.stat.exists
 
 - name: Copy OpenSearch configuration files
   template:
     src: opensearch.yml.j2
     dest: "{{ opensearch_path }}/config/opensearch.yml"
+    owner: opensearch
+    group: opensearch
     mode: '0644'
   notify:
     - restart opensearch
@@ -69,6 +75,8 @@
   template:
     src: jvm.options.j2
     dest: "{{ opensearch_path }}/config/jvm.options"
+    owner: opensearch
+    group: opensearch
     mode: '0644'
   notify:
     - restart opensearch
