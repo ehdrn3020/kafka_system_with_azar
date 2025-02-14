@@ -1,4 +1,11 @@
 ---
+- name: Ensure OpenSearch user exists
+  user:
+    name: opensearch
+    system: yes
+    shell: /bin/bash
+    create_home: no
+
 - name: Check if OpenSearch is already installed
   stat:
     path: "{{ opensearch_path }}"
