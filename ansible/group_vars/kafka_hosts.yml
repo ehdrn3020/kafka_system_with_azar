@@ -9,4 +9,4 @@ schema_registry_archive: 6.1
 opensearch_version: 2.9.0
 opensearch_path: /usr/local/opensearch
 opensearch_user: opensearch
-opensearch_heap_size: 2g
+opensearch_heap_size: 1g

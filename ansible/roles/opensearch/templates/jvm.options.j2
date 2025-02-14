@@ -1,18 +1,16 @@
-# OpenSearch JVM 메모리 설정
--Xms{{ opensearch_heap_size }}
--Xmx{{ opensearch_heap_size }}
+## JVM Heap Size 설정
+-Xms1g
+-Xmx1g
 
-# 최신 Java 11+ GC 설정
+## Java 17 이상에서 GC 설정
 -XX:+UseG1GC
 -XX:InitiatingHeapOccupancyPercent=75
 -XX:+UseStringDeduplication
 
-# GC 로그 설정
--XX:+UseGCLogFileRotation
--XX:NumberOfGCLogFiles=10
--XX:GCLogFileSize=128m
+# Java 17에서 GC 로깅을 위한 방식 (JEP 158 지원)
+-Xlog:gc*:file=/var/log/opensearch/gc.log:time,uptime,level,tags
 
-# OpenSearch 안정성 관련 옵션
+# 기타 성능 최적화 옵션
 -Djava.awt.headless=true
 -Dfile.encoding=UTF-8
 -Djna.nosys=true
