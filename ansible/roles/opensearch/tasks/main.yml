@@ -1,4 +1,9 @@
 ---
+- name: Ensure OpenSearch group exists
+  group:
+    name: opensearch
+    system: yes
+
 - name: Ensure OpenSearch user exists
   user:
     name: opensearch
