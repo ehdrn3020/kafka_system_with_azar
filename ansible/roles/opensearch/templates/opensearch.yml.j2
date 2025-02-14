@@ -1,7 +1,7 @@
 cluster.name: opensearch-cluster
 node.name: "opensearch-01"
 
-{% if inventory_hostname == "kafka01" %}
+{% if hostname == "kafka01" %}
 node.roles: ["master"]
 {% else %}
 node.roles: ["data"]
