@@ -1,9 +1,9 @@
 ---
-- hosts: schema_registry_hosts
+- hosts: kafka_hosts
   become: true
   connection: ssh
   vars:
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
   roles:
     - common
-    - elastic
+    - opensearch
