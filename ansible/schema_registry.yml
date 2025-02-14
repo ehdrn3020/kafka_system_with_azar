@@ -1,5 +1,5 @@
 ---
-- hosts: schema_registry_hosts
+- hosts: kafka_hosts
   become: true
   connection: ssh
   vars:

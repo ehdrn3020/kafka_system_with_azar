@@ -74,11 +74,9 @@
     mode: '0644'
 
 - name: copy zookeeper server in systemd
-  copy:
+  template:
     src: zookeeper.service
     dest: /etc/systemd/system/zookeeper.service
-    owner: root
-    group: root
     mode: '0644'
     backup: no
   notify:

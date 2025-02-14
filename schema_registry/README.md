@@ -29,7 +29,7 @@ curl -X GET http://kafka_01.com:8081/config
 {"compatibilityLevel":"FULL"}
 ```
 
-### python 파일을 통해 메세지 전송
+### 예시 - python 파일을 통해 메세지 전송
 ```commandline
 # 가상환경에 필요한 모듈 설치
 cd /home/ec2-user/kafka_system_with_azar/schema_registry
