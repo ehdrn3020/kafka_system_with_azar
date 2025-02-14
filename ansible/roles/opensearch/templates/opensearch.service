@@ -3,6 +3,8 @@ Description=OpenSearch Service
 After=network.target
 
 [Service]
+User=opensearch
+Group=opensearch
 ExecStart=/usr/local/opensearch/bin/opensearch
 Restart=always
 LimitNOFILE=65536
