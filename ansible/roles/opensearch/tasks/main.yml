@@ -37,12 +37,16 @@
   file:
     path: /var/log/opensearch
     state: directory
+    owner: opensearch
+    group: opensearch
     mode: '0755'
 
 - name: Create GC log file
   file:
     path: /var/log/opensearch/gc.log
     state: touch
+    owner: opensearch
+    group: opensearch
     mode: '0644'
   when: not opensearch_installed.stat.exists
 
