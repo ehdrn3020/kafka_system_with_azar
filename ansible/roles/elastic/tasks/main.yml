@@ -1,0 +1,65 @@
+---
+- name: Check if OpenSearch is already installed
+  stat:
+    path: "{{ opensearch_path }}"
+  register: opensearch_installed
+
+- name: Create OpenSearch installation directory
+  file:
+    path: "{{ opensearch_path }}"
+    state: directory
+    mode: '0755'
+  when: not opensearch_installed.stat.exists
+
+- name: Download OpenSearch from web
+  get_url:
+    url: "https://artifacts.opensearch.org/releases/bundle/opensearch/{{ opensearch_version }}/opensearch-{{ opensearch_version }}-linux-x64.tar.gz"
+    dest: /opt/opensearch.tar.gz
+    mode: '0600'
+  when: not opensearch_installed.stat.exists
+
+- name: Unarchive OpenSearch
+  unarchive:
+    src: /opt/opensearch.tar.gz
+    dest: /usr/local/
+    remote_src: yes
+  when: not opensearch_installed.stat.exists
+
+- name: Setup OpenSearch symbolic link
+  file:
+    src: /usr/local/opensearch-{{ opensearch_version }}
+    dest: "{{ opensearch_path }}"
+    state: link
+    force: yes
+  when: not opensearch_installed.stat.exists
+
+- name: Copy OpenSearch configuration files
+  template:
+    src: opensearch.yml.j2
+    dest: "{{ opensearch_path }}/config/opensearch.yml"
+    mode: '0644'
+  notify:
+    - restart opensearch
+
+- name: Copy JVM options file
+  template:
+    src: jvm.options.j2
+    dest: "{{ opensearch_path }}/config/jvm.options"
+    mode: '0644'
+  notify:
+    - restart opensearch
+
+- name: Copy OpenSearch systemd service files
+  template:
+    src: opensearch.service
+    dest: /etc/systemd/system/opensearch.service
+    mode: '0644'
+    backup: no
+  notify:
+    - restart opensearch
+
+- name: make sure a service is running
+  systemd:
+    state: started
+    name: opensearch
+    enabled: yes

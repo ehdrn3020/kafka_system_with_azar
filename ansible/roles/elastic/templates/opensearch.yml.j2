@@ -1,0 +1,13 @@
+cluster.name: opensearch-cluster
+node.name: "opensearch-01"
+
+node.roles: ["master"]
+node.roles: ["data"]
+
+network.host: 0.0.0.0
+http.port: 9200
+
+discovery.seed_hosts: ["kafka01", "kafka02", "kafka03"]
+cluster.initial_master_nodes: ["kafka01"]
+
+plugins.security.disabled: true

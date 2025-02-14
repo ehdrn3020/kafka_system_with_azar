@@ -1,0 +1,25 @@
+## JVM Heap Size 설정
+-Xms{{ opensearch_heap_size }}
+-Xmx{{ opensearch_heap_size }}
+
+## JDK GC 설정
+-XX:+UseG1GC
+-XX:InitiatingHeapOccupancyPercent=75
+-XX:+UseStringDeduplication
+
+## 로그 설정
+-XX:+PrintGCDetails
+-XX:+PrintGCDateStamps
+-XX:+PrintTenuringDistribution
+-XX:+PrintGCApplicationStoppedTime
+-XX:+PrintGCApplicationConcurrentTime
+-XX:+UseGCLogFileRotation
+-XX:NumberOfGCLogFiles=32
+-XX:GCLogFileSize=64m
+
+## 기본 설정
+-Djava.awt.headless=true
+-Dfile.encoding=UTF-8
+-Djna.nosys=true
+-Dlog4j2.disable.jmx=true
+-Dopensearch.allow_downgrade=true

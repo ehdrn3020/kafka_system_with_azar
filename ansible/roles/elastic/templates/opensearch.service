@@ -1,0 +1,12 @@
+[Unit]
+Description=OpenSearch Service
+After=network.target
+
+[Service]
+ExecStart=/usr/local/opensearch/bin/opensearch
+Restart=always
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target
