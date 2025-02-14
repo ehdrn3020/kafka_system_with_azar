@@ -33,7 +33,13 @@
     force: yes
   when: not opensearch_installed.stat.exists
 
-- name: Mkdir GC log file
+- name: Mkdir OpenSearch log directory exists
+  file:
+    path: /var/log/opensearch
+    state: directory
+    mode: '0755'
+
+- name: Create GC log file
   file:
     path: /var/log/opensearch/gc.log
     state: touch
