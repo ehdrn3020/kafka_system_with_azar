@@ -6,7 +6,7 @@ After=network.target
 User=opensearch
 Group=opensearch
 # vm.max_map_count 설정
-ExecStartPre=/bin/sh -c "sysctl -w vm.max_map_count=262144"
+ExecStartPre=/usr/bin/sudo /sbin/sysctl -w vm.max_map_count=262144
 ExecStart=/usr/local/opensearch/bin/opensearch
 Restart=always
 LimitNOFILE=65536
