@@ -95,6 +95,12 @@
   notify:
     - restart opensearch
 
+- name: Set vm.max_map_count temporarily
+  command: sysctl -w vm.max_map_count=262144
+
+- name: Reload systemd manager configuration
+  command: systemctl daemon-reload
+
 - name: make sure a service is running
   systemd:
     state: started
