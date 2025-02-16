@@ -55,7 +55,7 @@
     owner: opensearch
     group: opensearch
     mode: '0755'
-   when: not opensearch_installed.stat.exists
+  when: not opensearch_installed.stat.exists
 
 - name: Create GC log file
   file:
