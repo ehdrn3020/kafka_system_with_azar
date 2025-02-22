@@ -6,6 +6,8 @@ dir_path: /data/kafka-logs
 schema_registry_version: 6.1.0
 schema_registry_archive: 6.1
 
+connector_verison: 2.9.0
+
 opensearch_version: 2.9.0
 opensearch_path: /usr/local/opensearch
 opensearch_user: opensearch
