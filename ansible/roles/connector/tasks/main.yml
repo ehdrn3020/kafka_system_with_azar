@@ -18,19 +18,19 @@
     mode: '0600'
 #  when: not connector_installed.stat.exists
 
-#- name: unarchive kafka
-#  unarchive:
-#    src: /opt/kafka_2.12-{{ kafkaversion }}.tgz
-#    dest: /usr/local
-#    remote_src: yes
+- name: unarchive kafka connector
+  unarchive:
+    src: /opt/opensearch-connector-for-apache-kafka-{{connector_opensearch_version}}.zip
+    dest: /usr/local
+    remote_src: yes
 #  when: not kafka_installed.stat.exists
 #
-#- name: setup link kafka
-#  file:
-#    path: /usr/local/kafka
-#    src: /usr/local/kafka_2.12-{{ kafkaversion }}
-#    state: link
-#    force: yes
+- name: setup link kafka connector
+  file:
+    path: /usr/local/kafka/connector
+    src: /usr/local/kafka/connector/opensearch-connector-for-apache-kafka-{{connector_opensearch_version}}
+    state: link
+    force: yes
 #  when: not kafka_installed.stat.exists
 #
 #- name: copy kafka server conf files
