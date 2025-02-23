@@ -11,12 +11,12 @@
     mode: '0755'
   when: not connector_installed.stat.exists
 
-- name: download kafka from web
+- name: download kafka connector from web
   get_url:
-    url: https://artifacts.opensearch.org/releases/bundle/opensearch-kafka-connector/opensearch-kafka-connector-{{connector_verison}}.zip
+    url: https://github.com/Aiven-Open/opensearch-connector-for-apache-kafka/releases/download/v{{connector_opensearch_version}}/opensearch-connector-for-apache-kafka-{{connector_opensearch_version}}.zip
     dest: /opt/
     mode: '0600'
-  when: not connector_installed.stat.exists
+#  when: not connector_installed.stat.exists
 
 #- name: unarchive kafka
 #  unarchive:
