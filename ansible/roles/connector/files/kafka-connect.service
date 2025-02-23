@@ -1,0 +1,17 @@
+[Unit]
+Description=kafka-connect
+After=network.target kafka-server.target
+
+[Service]
+Type=simple
+SyslogIdentifier=kafka-connect
+WorkingDirectory=/usr/local/kafka
+Restart=always
+# Kafka Connect 실행 명령
+ExecStart=/usr/local/kafka/bin/connect-distributed.sh /usr/local/kafka/config/connect-distributed.properties
+ExecStop=/bin/kill -TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+
+
