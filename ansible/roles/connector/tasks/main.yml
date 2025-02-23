@@ -1,0 +1,69 @@
+---
+- name: check if connector is already installed
+  stat:
+    path: /usr/local/kafka/connector
+  register: connector_installed
+
+- name: make dir kafka connector
+  file:
+    path: /usr/local/kafka/connector
+    state: directory
+    mode: '0755'
+  when: not connector_installed.stat.exists
+
+- name: download kafka from web
+  get_url:
+    url: https://artifacts.opensearch.org/releases/bundle/opensearch-kafka-connector/opensearch-kafka-connector-{{connector_verison}}.zip
+    dest: /opt/
+    mode: '0600'
+  when: not connector_installed.stat.exists
+
+#- name: unarchive kafka
+#  unarchive:
+#    src: /opt/kafka_2.12-{{ kafkaversion }}.tgz
+#    dest: /usr/local
+#    remote_src: yes
+#  when: not kafka_installed.stat.exists
+#
+#- name: setup link kafka
+#  file:
+#    path: /usr/local/kafka
+#    src: /usr/local/kafka_2.12-{{ kafkaversion }}
+#    state: link
+#    force: yes
+#  when: not kafka_installed.stat.exists
+#
+#- name: copy kafka server conf files
+#  template:
+#    src: server.properties.j2
+#    dest: /usr/local/kafka/config/server.properties
+#    mode: '0644'
+#    backup: no
+#  notify:
+#    - restart kafka server
+#
+#- name: copy kafka conf file
+#  copy:
+#    src: "{{ item }}"
+#    dest: /usr/local/kafka/config/
+#    mode: '0644'
+#    backup: no
+#  with_items:
+#    - jmx
+#    - connect-distributed.properties
+#  notify:
+#    - restart kafka server
+#
+#- name: copy kafka server in systemd
+#  copy:
+#    src: "{{ item }}"
+#    dest: /etc/systemd/system/
+#    owner: root
+#    group: root
+#    mode: '0644'
+#    backup: no
+#  with_items:
+#    - kafka.service
+#    - kafka-connect.service
+#  notify:
+#    - restart kafka server
