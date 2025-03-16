@@ -1,16 +1,6 @@
 cluster.name: opensearch-cluster
-node.name: "opensearch-01"
-
-# 단일 노드 모드 활성화
-discovery.type: single-node
-
-# 노드 역할 설정 (마스터 및 데이터 역할)
-node.roles: ["master", "data"]
-
-# 네트워크 설정 (모든 IP에서 접근 가능)
+node.name: opensearch-01
 network.host: 0.0.0.0
-http.port: 9200
-transport.port: 9300
-
-# 보안 플러그인 비활성화 (테스트용)
-plugins.security.disabled: true
+discovery.type: single-node
+bootstrap.memory_lock: true
+plugins.security.disabled: true  # 보안 기능 비활성화 (테스트용)
