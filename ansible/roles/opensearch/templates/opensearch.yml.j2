@@ -1,16 +1,18 @@
 cluster.name: opensearch-cluster
 node.name: "opensearch-01"
 
-{% if hostname == "kafka01" %}
-node.roles: ["master"]
-{% else %}
-node.roles: ["data"]
-{% endif %}
+# 마스터 노드 설정
+cluster.initial_master_nodes: ["kafka_01.com", "kafka_02.com", "kafka_03.com"]
+node.roles: ["master", "data"]
 
+# 노드 탐색 설정
+discovery.seed_hosts: ["kafka_01.com", "kafka_02.com", "kafka_03.com"]
+
+# 네트워크 설정
 network.host: 0.0.0.0
 http.port: 9200
 
-discovery.seed_hosts: ["kafka01", "kafka02", "kafka03"]
-cluster.initial_master_nodes: ["kafka01"]
-
+# 보안 플러그인 비활성화 (기본 설정)
 plugins.security.disabled: true
+
+
