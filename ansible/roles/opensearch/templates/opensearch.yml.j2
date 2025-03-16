@@ -2,11 +2,11 @@ cluster.name: opensearch-cluster
 node.name: "opensearch-01"
 
 # 마스터 노드 설정
-cluster.initial_master_nodes: ["kafka_01.com", "kafka_02.com", "kafka_03.com"]
+cluster.initial_master_nodes: ["opensearch-01", "opensearch-02", "opensearch-03"]
 node.roles: ["master", "data"]
 
 # 노드 탐색 설정
-discovery.seed_hosts: ["kafka_01.com", "kafka_02.com", "kafka_03.com"]
+discovery.seed_hosts: ["172.31.45.217", "172.31.37.196", "172.31.34.150"]
 
 # 네트워크 설정
 network.host: 0.0.0.0
