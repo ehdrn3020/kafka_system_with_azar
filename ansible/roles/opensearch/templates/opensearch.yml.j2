@@ -1,19 +1,16 @@
 cluster.name: opensearch-cluster
 node.name: "opensearch-01"
 
-# 마스터 노드 설정
-cluster.initial_master_nodes: ["opensearch-01", "opensearch-02", "opensearch-03"]
+# 단일 노드 모드 활성화
+discovery.type: single-node
+
+# 노드 역할 설정 (마스터 및 데이터 역할)
 node.roles: ["master", "data"]
 
-# 노드 탐색 설정
-discovery.seed_hosts: ["172.31.45.217", "172.31.37.196", "172.31.34.150"]
-
-# 네트워크 설정
+# 네트워크 설정 (모든 IP에서 접근 가능)
 network.host: 0.0.0.0
 http.port: 9200
 transport.port: 9300
 
-# 보안 플러그인 비활성화 (기본 설정)
+# 보안 플러그인 비활성화 (테스트용)
 plugins.security.disabled: true
-
-
