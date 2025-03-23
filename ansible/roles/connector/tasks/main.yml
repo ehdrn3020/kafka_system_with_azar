@@ -32,8 +32,8 @@
     mode: '0644'
     backup: no
   with_items:
-    - connect-distributed.properties
-    - connect-opensearch-sink.properties
+    - connect-distributed.properties.j2
+    - connect-opensearch-sink.properties.j2
   notify:
     - restart kafka-connect server
   vars:
