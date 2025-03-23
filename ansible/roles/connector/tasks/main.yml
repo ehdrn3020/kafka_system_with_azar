@@ -11,33 +11,30 @@
     mode: '0755'
   when: not connector_installed.stat.exists
 
-#- name: download kafka connector from web
-#  get_url:
-#    url: https://github.com/Aiven-Open/opensearch-connector-for-apache-kafka/releases/download/v{{connector_opensearch_version}}/opensearch-connector-for-apache-kafka-{{connector_opensearch_version}}.zip
-#    dest: /opt/
-#    mode: '0600'
-##  when: not connector_installed.stat.exists
-#
-#- name: unarchive kafka connector
-#  unarchive:
-#    src: /opt/opensearch-connector-for-apache-kafka-{{connector_opensearch_version}}.zip
-#    dest: /usr/local/kafka/connector
-#    remote_src: yes
-##  when: not connector_installed.stat.exists
+- name: download kafka connector from web
+  get_url:
+    url: https://github.com/Aiven-Open/opensearch-connector-for-apache-kafka/releases/download/v{{connector_opensearch_version}}/opensearch-connector-for-apache-kafka-{{connector_opensearch_version}}.zip
+    dest: /opt/
+    mode: '0600'
+#  when: not connector_installed.stat.exists
+
+- name: unarchive kafka connector
+  unarchive:
+    src: /opt/opensearch-connector-for-apache-kafka-{{connector_opensearch_version}}.zip
+    dest: /usr/local/kafka/connector
+    remote_src: yes
+#  when: not connector_installed.stat.exists
 
 - name: copy kafka-connect conf file
-  copy:
-    src: "{{ item }}"
-    dest: /usr/local/kafka/config/
+  template:
+    src: "{{ item }}.j2"
+    dest: "/usr/local/kafka/config/{{ item }}"
     mode: '0644'
-    backup: no
-  with_items:
-    - connect-distributed.properties.j2
-    - connect-opensearch-sink.properties.j2
-  notify:
-    - restart kafka-connect server
-  vars:
-    rest_host: "{{ hostname }}"
+    with_items:
+      - connect-distributed.properties
+      - connect-opensearch-sink.properties
+    notify:
+      - restart kafka-connect server
 
 - name: copy kafka kafka-connect in systemd
   copy:
