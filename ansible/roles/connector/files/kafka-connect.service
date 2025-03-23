@@ -8,7 +8,7 @@ SyslogIdentifier=kafka-connect
 WorkingDirectory=/usr/local/kafka
 Restart=always
 # Kafka Connect 실행 명령
-ExecStart=/usr/local/kafka/bin/connect-distributed.sh /usr/local/kafka/config/connect-distributed.properties
+ExecStart=/usr/local/kafka/bin/connect-distributed.sh /usr/local/kafka/config/connect-distributed.properties /usr/local/kafka/config/connect-opensearch-sink.properties
 ExecStop=/bin/kill -TERM $MAINPID
 
 [Install]
