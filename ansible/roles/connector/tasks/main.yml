@@ -30,11 +30,11 @@
     src: "{{ item }}.j2"
     dest: "/usr/local/kafka/config/{{ item }}"
     mode: '0644'
-    with_items:
-      - connect-distributed.properties
-      - connect-opensearch-sink.properties
-    notify:
-      - restart kafka-connect server
+  with_items:
+    - connect-distributed.properties
+    - connect-opensearch-sink.properties
+  notify:
+    - restart kafka-connect server
 
 - name: copy kafka kafka-connect in systemd
   copy:
