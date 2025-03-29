@@ -1,42 +1,46 @@
 from confluent_kafka import avro
 from confluent_kafka.avro import AvroProducer
 
-# Avro Value 스키마 정의
 value_schema_str = """
-{
-  "namespace": "example.avro",
-  "type": "record",
-  "name": "User",
-  "fields": [
-    {"name": "first_name", "type": "string"},
-    {"name": "last_name", "type": "string"},
-    {"name": "age", "type": "int"}
-  ]
+{"namespace": "student.avro",
+ "type": "record",
+ "doc": "This is an example of Avro.",
+ "name": "Student",
+ "fields": [
+     {"name": "first_name", "type": ["null", "string"], "default": null, "doc": "First name of the student"},
+     {"name": "last_name", "type": ["null", "string"], "default": null, "doc": "Last name of the student"},
+     {"name": "class", "type": "int", "default": 1, "doc": "Class of the student"}
+ ]
 }
 """
 
 value_schema = avro.loads(value_schema_str)
+value = {"first_name": "Peter", "last_name": "Parker", "class": 1} # 전송할 메시지
 
-# 전송할 Avro 메시지 값
-value = {
-    "first_name": "Bruce",
-    "last_name": "Wayne",
-    "age": 35
-}
+schema_registry_urls = [
+    'http://kafka_01.com:8081',
+    'http://kafka_02.com:8081',
+    'http://kafka_03.com:8081'
+]
 
-# 메시지 전송 후 콜백
 def delivery_report(err, msg):
+    """ Called once for each message produced to indicate delivery result.
+        Triggered by poll() or flush(). """
     if err is not None:
-        print(f"메시지 전송 실패: {err}")
+        print('Message delivery failed: {}'.format(err))
     else:
-        print(f"메시지 전송 완료: {msg.topic()} [{msg.partition()}]")
+        print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
 
-# Avro Producer 생성
-producer = AvroProducer({
-    'bootstrap.servers': 'kafka_01.com:9092,kafka_02.com:9092,kafka_03.com:9092',
-    'schema.registry.url': 'http://kafka_01.com:8081'
-}, default_value_schema=value_schema)
+for url in schema_registry_urls:
+    try:
+        avroProducer = AvroProducer({
+            'bootstrap.servers': 'kafka_01.com,kafka_02.com,kafka_03.com',
+            'on_delivery': delivery_report,
+            'schema.registry.url': 'http://kafka_01.com:8081'
+            }, default_value_schema=value_schema)
 
-# 메시지 전송
-producer.produce(topic='opensearch-sink', value=value, callback=delivery_report)
-producer.flush()
+        avroProducer.produce(topic='opensearch-sink', value=value)
+        avroProducer.flush()
+        break
+    except Exception as e:
+        print(f"Failed to connect to {url}, Error: {e}")
