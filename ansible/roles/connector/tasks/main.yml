@@ -39,17 +39,43 @@
     mode: '0644'
   when: not connector_installed.stat.exists
 
-- name: Download schema-serializer JAR
+- name: Download Avro serializer JAR
   get_url:
-    url: https://packages.confluent.io/maven/io/confluent/kafka-schema-serializer/7.4.0/kafka-schema-serializer-7.4.0.jar
-    dest: /usr/local/kafka/libs/kafka-schema-serializer-7.4.0.jar
+    url: https://packages.confluent.io/maven/io/confluent/kafka-avro-serializer/7.4.0/kafka-avro-serializer-7.4.0.jar
+    dest: /usr/local/kafka/libs/kafka-avro-serializer-7.4.0.jar
     mode: '0644'
   when: not connector_installed.stat.exists
 
+- name: Download kafka-connect-avro-converter JAR
+  get_url:
+    url: https://packages.confluent.io/maven/io/confluent/kafka-connect-avro-converter/7.4.0/kafka-connect-avro-converter-7.4.0.jar
+    dest: /usr/local/kafka/libs/kafka-connect-avro-converter-7.4.0.jar
+    mode: '0644'
+#  when: not connector_installed.stat.exists
+
+## Avro Serializer JAR
+#wget https://packages.confluent.io/maven/io/confluent/kafka-avro-serializer/7.4.0/kafka-avro-serializer-7.4.0.jar -P /usr/local/kafka/libs/
+#
+## Confluent Common Utils (의존성)
+#wget https://packages.confluent.io/maven/io/confluent/common-utils/7.4.0/common-utils-7.4.0.jar -P /usr/local/kafka/libs/
+#
+## SLF4J (이미 설치되어 있을 수 있음)
+#wget https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar -P /usr/local/kafka/libs/
+#
+## Jackson (이미 설치되어 있을 수도 있음)
+#wget https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.10.2/jackson-databind-2.10.2.jar -P /usr/local/kafka/libs/
+#
+## Avro 1.10.2 버전 예시 (Confluent 7.x와 호환 가능)
+#wget https://repo1.maven.org/maven2/org/apache/avro/avro/1.11.1/avro-1.11.1.jar -P /usr/local/kafka/libs/
+#
+#wget https://packages.confluent.io/maven/io/confluent/kafka-connect-avro-converter/7.4.0/kafka-connect-avro-converter-7.4.0.jar -P /usr/local/kafka/libs/
+#
+#wget https://repo1.maven.org/maven2/com/google/guava/guava/31.0.1-jre/guava-31.0.1-jre.jar
+
 - name: Download guava JAR
   get_url:
-    url: https://repo1.maven.org/maven2/com/google/guava/guava/30.1.1-jre/guava-30.1.1-jre.jar
-    dest: /usr/local/kafka/libs/guava-30.1.1-jre.jar
+    url: https://repo1.maven.org/maven2/com/google/guava/guava/31.0.1-jre/guava-31.0.1-jre.jar
+    dest: /usr/local/kafka/libs/guava-31.0.1-jre.jar
     mode: '0644'
 #  when: not connector_installed.stat.exists
 
