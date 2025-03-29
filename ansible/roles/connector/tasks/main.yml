@@ -33,6 +33,8 @@
   with_items:
     - connect-distributed.properties
     - connect-opensearch-sink.properties
+  vars:
+    rest_host: "{{ hostvars[inventory_hostname]['hostname'] }}"
   notify:
     - restart kafka-connect server
 
