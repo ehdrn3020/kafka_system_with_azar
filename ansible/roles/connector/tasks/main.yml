@@ -37,12 +37,14 @@
     url: https://github.com/Aiven-Open/opensearch-connector-for-apache-kafka/releases/download/v3.1.1/opensearch-connector-for-apache-kafka-3.1.1.tar
     dest: /usr/local/kafka/libs/opensearch-connector-for-apache-kafka-3.1.1.tar
     mode: '0644'
+  when: not connector_installed.stat.exists
 
 - name: Apply OpenSearch Kafka Connector
   ansible.builtin.unarchive:
     src: /usr/local/kafka/libs/opensearch-connector-for-apache-kafka-3.1.1.tar
     dest: /usr/local/kafka/libs/
     remote_src: yes
+  when: not connector_installed.stat.exists
 
 - name: copy kafka-connect conf file
   template:

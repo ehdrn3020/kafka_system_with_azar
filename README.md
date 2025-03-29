@@ -97,15 +97,18 @@ curl -X GET http://kafka_01.com:8081/config
 ## Elastic Search
 ### opensearch 설치
 ```commandline
-# kafka01은 master node, 나머지 date node
+# kafka01 호스트에 싱글 노드로 설치
 ansible-playbook -i inventory/hosts opensearch.yml
 ```
 
 ### opensearch 확인
 ```commandline
 sudo systemctl status opensearch
-# 실행 여부 확인
-curl -X GET "http://localhost:9200"
+
+# 클러스터 내 각 노드의 정보
+curl -X GET "http://kafka_01.com:9200/_cat/nodes?v"
+# 클러스터의 전체 상태(Health) 를 조회
+curl -X GET "http://kafka_01.com:9200/_cluster/health?pretty"
 ```
 
 
@@ -114,14 +117,59 @@ curl -X GET "http://localhost:9200"
 ```commandline
 ansible-playbook -i inventory/hosts connector.yml
 ```
+
 ### 커넥터 확인
 ```commandline
+# 실행 확인
 sudo systemctl status kafka-connect
+# 에러시 로그 확인
+journalctl -u kafka-connect -f
+
+# 클러스터에 현재 등록된 커넥터 목록을 확인
 curl http://localhost:8083/connectors | python -m json.tool
+# 커넥터 플러그인 확인
+curl http://localhost:8083/connector-plugins | jq
+[
+  {
+    "class": "io.aiven.kafka.connect.opensearch.OpensearchSinkConnector",
+    "type": "sink",
+    "version": "3.1.1"
+  },
+...]
 ```
 
-## Data
-- kafka 데이터 전송
-- schema 등록확인
-- sink connector 확인
-- opensearch index store 확인
+### 토픽 생성
+```commandline
+/usr/local/kafka/bin/kafka-topics.sh --create \
+    --bootstrap-server kafka_01.com:9092,kafka_02.com:9092,kafka_03.com:9092 \
+    --replication-factor 3 \
+    --partitions 3 \
+    --topic opensearch-sink
+/usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server kafka_01.com:9092,kafka_02.com:9092,kafka_03.com:9092
+```
+
+### 컨텍터 등록
+```commandline
+# API로 opensearch sink connector 등록
+curl -X POST http://kafka_01.com:8083/connectors -H "Content-Type: application/json" -d '{
+  "name": "opensearch-sink",
+  "config": {
+    "connector.class": "io.aiven.kafka.connect.opensearch.OpensearchSinkConnector",
+    "tasks.max": "1",
+    "topics": "opensearch-sink",
+    "connection.url": "http://kafka_01.com:9200",
+    "key.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schemas.enable": "false",
+    "schema.ignore": "true",
+    "type.name": "kafka-connect"
+  }
+}'
+
+# 등록 확인
+curl http://localhost:8083/connectors | python -m json.tool
+...
+[
+    "opensearch-sink"
+]
+```
