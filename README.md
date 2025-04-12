@@ -140,15 +140,19 @@ curl http://localhost:8083/connector-plugins | jq
 
 ### 토픽 생성
 ```commandline
+# 생성
 /usr/local/kafka/bin/kafka-topics.sh --create \
     --bootstrap-server kafka_01.com:9092,kafka_02.com:9092,kafka_03.com:9092 \
     --replication-factor 3 \
     --partitions 3 \
     --topic opensearch-sink
 /usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server kafka_01.com:9092,kafka_02.com:9092,kafka_03.com:9092
+
+# 확인
+/usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server kafka_01.com:9092
 ```
 
-### 컨텍터 등록
+### 컨넥터 등록
 ```commandline
 # API로 opensearch sink connector 등록
 curl -X POST http://kafka_01.com:8083/connectors -H "Content-Type: application/json" -d '{
@@ -158,8 +162,13 @@ curl -X POST http://kafka_01.com:8083/connectors -H "Content-Type: application/j
     "tasks.max": "1",
     "topics": "opensearch-sink",
     "connection.url": "http://kafka_01.com:9200",
+
     "key.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "key.converter.schema.registry.url": "http://kafka_01.com:8081",
+    "value.converter.schema.registry.url": "http://kafka_01.com:8081",
+
+    "schema.registry.url": "http://kafka_01.com:8081",
     "value.converter.schemas.enable": "false",
     "schema.ignore": "true",
     "type.name": "kafka-connect"
@@ -172,4 +181,44 @@ curl http://localhost:8083/connectors | python -m json.tool
 [
     "opensearch-sink"
 ]
+
+# 상태 확인
+curl -X GET http://kafka_01.com:8083/connectors/opensearch-sink/status | jq
+
+# 커넥터 삭제
+curl -X DELETE http://localhost:8083/connectors/opensearch-sink
+```
+
+
+## 실행 예제
+
+### kafka 데이터 전송 예제 코드
+```commandline
+# 가상환경에 필요한 모듈 설치 ( kafka_01.com 호스트에서 실행 )
+cd /home/ec2-user/kafka_system_with_azar/schema_registry
+python -m venv venv
+source  venv/bin/activate
+pip install confluent-kafka[avro]
+
+# 메세지 전송 ( Schema Registry가 실행 중인 서버 )
+python opensearch_sink_example.py
+>>> Message delivered to kafka-avro2 [0]
+```
+
+### schema 등록확인
+```commandline
+# subjects list 확인
+curl http://kafka_01.com:8081/subjects
+>>> ["opensearch-sink-value"]
+
+# subject 버전 확인
+curl http://kafka_01.com:8081/subjects/opensearch-sink-value/versions
+>>> [1]
+
+```
+
+### opensearch index store 확인
+```commandline
+curl -X GET "http://kafka_01.com:9200/_cat/indices?v"
+curl -X GET "http://kafka_01.com:9200/opensearch-sink*/_search?pretty"
 ```
